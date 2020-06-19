@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-//import { MatDialog } from '@angular/material/dialog';
 import { ColorService, DatasetOptions, Timespan } from '@helgoland/core';
 import { AdditionalData, D3PlotOptions } from '@helgoland/d3';
-//import { StyleModificationComponent } from '../../components/style-modification/style-modification.component';
 
 @Component({
   selector: 'app-additional-data-graph',
@@ -12,9 +10,7 @@ import { AdditionalData, D3PlotOptions } from '@helgoland/d3';
 export class AdditionalDataGraphComponent implements OnInit {
 
   public datasetIds = [
-    'https://www.fluggs.de/sos2/api/v1/__26',
-    'https://www.fluggs.de/sos2/api/v1/__160',
-  ];
+    'https://www.fluggs.de/sos2/api/v1/__427'];
 
   public additionalData: AdditionalData[] = [];
   public timespan: Timespan;
@@ -33,31 +29,38 @@ export class AdditionalDataGraphComponent implements OnInit {
 
   constructor(
     private color: ColorService//,
- //   private dialog: MatDialog
+    //   private dialog: MatDialog
   ) {
     this.datasetIds.forEach((entry) => {
       const option = new DatasetOptions(entry, this.color.getColor());
       option.generalize = true;
-      option.color = "#4286f4";
-      option.barPeriod = "day";
-      option.barStartOf = "day";
-      option.color = "#000000";
+      option.color = '#4286f4';
+      option.barPeriod = 'day';
+      option.barStartOf = 'day';
+      option.color = '#000000';
       option.lineDashArray = 0;
       option.lineWidth = 2;
-      option.pointBorderColor = "#000000";
+      option.pointBorderColor = '#000000';
       option.pointBorderWidth = 0;
       option.pointRadius = 0;
       option.showReferenceValues = [];
-      option.type = "line";
+      option.type = 'line';
       option.visible = true;
       option.autoRangeSelection = true;
       option.generalize = false;
       option.separateYAxis = false;
       option.yAxisRange = {
-        "min": 0,
-        "max": 0
+        min: 0,
+        max: 0
       };
-      option.zeroBasedYAxis = false;
+      option.zeroBasedYAxis = true;
+      option.color = '#4286f4';
+      option.internalId = 'sos2-tamis/api/v1/__159';
+      option.generalize = false;
+      option.type = 'bar';
+      option.barStartOf = 'day';
+      option.barPeriod = 'P1D';
+
 
       this.datasetOptions.set(entry, option);
     });
@@ -69,7 +72,7 @@ export class AdditionalDataGraphComponent implements OnInit {
     const options = new DatasetOptions('addData', 'red');
     options.pointRadius = 3;
     options.lineWidth = 3;
-    this.additionalData = [{
+    /*this.additionalData = [{
       // linkedDatasetId: this.datasetIds[0],
       internalId: 'temp',
       yaxisLabel: 'random',
@@ -80,10 +83,10 @@ export class AdditionalDataGraphComponent implements OnInit {
           value: this.createValue()
         }
       ]
-    }];
+    }];*/
   }
 
-  public toggleTimer() {
+  /*public toggleTimer() {
     if (this.interval) {
       clearInterval(this.interval);
       this.interval = null;
@@ -97,11 +100,11 @@ export class AdditionalDataGraphComponent implements OnInit {
         this.setNewTimespan();
       }, 1000);
     }
-  }
+  }*/
 
   private setNewTimespan() {
     const end = new Date().getTime();
-    const diff = 60000;
+    const diff = 60 * 24 * 60 * 60 * 1000;
     this.timespan = new Timespan(end - diff, end);
   }
 
