@@ -10,10 +10,12 @@ import { AdditionalData, D3PlotOptions } from '@helgoland/d3';
 export class AdditionalDataGraphComponent implements OnInit {
 
   public datasetIds = [
-    'https://www.fluggs.de/sos2/api/v1/__427'];
+    'https://www.fluggs.de/sos2/api/v1/__37',
+    'https://www.fluggs.de/sos2/api/v1/__355',
+    'https://www.fluggs.de/sos2/api/v1/__601'];
 
-  public additionalData: AdditionalData[] = [];
-  public timespan: Timespan;
+  additionalData: AdditionalData[] = [];
+  timespan: Timespan;
 
   public graphOptions: D3PlotOptions = {
     yaxis: true
@@ -27,84 +29,62 @@ export class AdditionalDataGraphComponent implements OnInit {
 
   public interval: NodeJS.Timer;
 
+
+
   constructor(
     private color: ColorService//,
     //   private dialog: MatDialog
   ) {
-    this.datasetIds.forEach((entry) => {
-      const option = new DatasetOptions(entry, this.color.getColor());
-      option.generalize = true;
-      option.color = '#4286f4';
-      option.barPeriod = 'day';
-      option.barStartOf = 'day';
-      option.color = '#000000';
-      option.lineDashArray = 0;
-      option.lineWidth = 2;
-      option.pointBorderColor = '#000000';
-      option.pointBorderWidth = 0;
-      option.pointRadius = 0;
-      option.showReferenceValues = [];
-      option.type = 'line';
-      option.visible = true;
-      option.autoRangeSelection = true;
-      option.generalize = false;
-      option.separateYAxis = false;
-      option.yAxisRange = {
-        min: 0,
-        max: 0
-      };
-      option.zeroBasedYAxis = true;
-      option.color = '#4286f4';
-      option.internalId = 'sos2-tamis/api/v1/__159';
-      option.generalize = false;
-      option.type = 'bar';
-      option.barStartOf = 'day';
-      option.barPeriod = 'P1D';
 
+    const o1 = new DatasetOptions('https://www.fluggs.de/sos2/api/v1/__37', this.color.getColor());
+    o1.lineDashArray = 0;
+    o1.lineWidth = 2;
+    o1.pointBorderColor = '#000000';
+    o1.pointBorderWidth = 0;
+    o1.pointRadius = 0;
+    o1.type = 'line';
+    o1.visible = true;
+    o1.autoRangeSelection = true;
+    o1.generalize = false;
+    o1.separateYAxis = false;
+    o1.yAxisRange = { min: 0, max: 50 };
 
-      this.datasetOptions.set(entry, option);
-    });
+    const o2 = new DatasetOptions('https://www.fluggs.de/sos2/api/v1/__355', this.color.getColor());
+    o2.lineDashArray = 5;
+    o2.lineWidth = 2;
+    o2.pointBorderColor = '#0000FF';
+    o2.pointBorderWidth = 0;
+    o2.pointRadius = 0;
+    o2.type = 'line';
+    o2.visible = true;
+    o2.autoRangeSelection = true;
+    o2.generalize = false;
+    o2.separateYAxis = false;
+    o2.yAxisRange = { min: 0, max: 50 };
 
+    const o3 = new DatasetOptions('https://www.fluggs.de/sos2/api/v1/__601', this.color.getColor());
+    o3.lineDashArray = 5;
+    o3.lineWidth = 2;
+    o3.pointBorderColor = '#FF00FF';
+    o3.pointBorderWidth = 0;
+    o3.pointRadius = 0;
+    o3.type = 'line';
+    o3.visible = true;
+    o3.autoRangeSelection = true;
+    o3.generalize = false;
+    o3.separateYAxis = false;
+    o3.yAxisRange = { min: 0, max: 50 };
 
+    this.datasetOptions.set('https://www.fluggs.de/sos2/api/v1/__37', o1);
+    this.datasetOptions.set('https://www.fluggs.de/sos2/api/v1/__355', o2);
+    this.datasetOptions.set('https://www.fluggs.de/sos2/api/v1/__601', o2);
 
     this.setNewTimespan();
-
-    const options = new DatasetOptions('addData', 'red');
-    options.pointRadius = 3;
-    options.lineWidth = 3;
-    /*this.additionalData = [{
-      // linkedDatasetId: this.datasetIds[0],
-      internalId: 'temp',
-      yaxisLabel: 'random',
-      datasetOptions: options,
-      data: [
-        {
-          timestamp: new Date().getTime(),
-          value: this.createValue()
-        }
-      ]
-    }];*/
   }
-
-  /*public toggleTimer() {
-    if (this.interval) {
-      clearInterval(this.interval);
-      this.interval = null;
-    } else {
-      this.interval = setInterval(() => {
-        this.additionalData[0].data.push({
-          timestamp: new Date().getTime(),
-          value: this.createValue()
-        });
-        this.additionalData = Object.assign([], this.additionalData);
-        this.setNewTimespan();
-      }, 1000);
-    }
-  }*/
 
   private setNewTimespan() {
     const end = new Date().getTime();
-    const diff = 60 * 24 * 60 * 60 * 1000;
+    const diff = 365 * 24 * 60 * 60 * 1000;
     this.timespan = new Timespan(end - diff, end);
   }
 
@@ -147,11 +127,6 @@ export class AdditionalDataGraphComponent implements OnInit {
   public removeEntry(idx: number) {
     this.additionalData[0].data.splice(idx, 1);
     this.timespan = new Timespan(this.timespan.from, this.timespan.to);
-  }
-
-
-  private createValue(): number {
-    return Math.random() * 10;
   }
 
   public ngOnInit() { }
